@@ -26,10 +26,21 @@ Now, let's create a new package called `app`, which will host the whole app. Rem
 then create the `__init__.py`, type the following code:
 ```
 from flask import Flask
+
 app = Flask(__name__)
+
 from app import routes
 ```
-The script above only imports the class `Flask` from the flask, and create a web app object with this class. the `__name__` variables passed to the class Flask is a Python predefined variable, which is set to the name of the module in which it used. When related resources is needed to load, as the template I said in the [Chapter II] `Todo`, Flask will use this location as the 
+The script above only imports the class `Flask` from the flask, and create a web app object with this class. the `__name__` variables passed to the class Flask is a Python predefined variable, which is set to the name of the module in which it used. When related resources is needed to load, as the template I said in the [Chapter II] `Todo`, Flask will use this location as a starting point. In the end of the code, from app import the `routes` module, which doesn't exist yet.
+
+One aspect that may be confusing. 
+
+First, there are two entities named `app`. The `app` package is defined and constructed by the *app* directory and `__init__.py` script, and referenced by `from app import routes`. `app` variable is defined as a instance of a class from `__init__.py`, so it becomes the attributes of the `app` package.
+
+~~Second~~,Another peculiarity is that the routes module is imported at the bottom, rather than the top of the script. This is meant to solve the problem, *Loop Import*, which is a common problem with Flask application. You will see the `routes` module need import the `app` variable defined in this script, so import the `routes` at the bottom can avoid the error caused by the ***mutual references between these two files.
+
+So, WHAT is in the `routes` module? Route is different URLs that the app implements. In Flask, **handlers for the application routes are written as Python functions, called view functions. View functions are mapped to one or more route URLs so that Flask knows what logic to execute when a client requests a given URL.**
+
 
 
 
